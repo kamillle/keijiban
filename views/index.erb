@@ -1,3 +1,10 @@
 <%#this is keijiban by sinatara%>
 
 <h1>掲示板へようこそ！</h1>
+掲示板一覧<br>
+
+<% @boards.each do |board| %>
+  <%= board["title"] %><br>
+<% end %>
+
+<%= link_to('boards/new', 'スレッド作成') %>
