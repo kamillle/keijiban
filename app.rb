@@ -1,11 +1,14 @@
 # routingを担う
 
 require 'sinatra'
+require 'sinatra/reloader'
 require 'mysql2'
 require 'pry'
 
 # 実行したいファイルのディレクトリからの相対パスで該当のファイルを探しに行く
-require_relative 'models/init'
+require_relative 'models/mysql_connection'
+require_relative 'models/board'
+require_relative 'models/post'
 
 helpers do
   def link_to(path, description)
@@ -13,17 +16,9 @@ helpers do
   end
 end
 
-# Mysqlドライバの設定
-client = Mysql2::Client.new(
-  host: 'localhost',
-  port: 3306,
-  username: 'root',
-  database: 'keijiban_sinatra',
-)
-
 # root
 get '/' do
-  @all_boards = client.query("SELECT * FROM boards;")
+  @all_boards = Board.all
 
   erb :index
 end
@@ -36,20 +31,24 @@ end
 # Boards#create
 post '/boards' do
   title = params[:title]
-  query  = %Q(INSERT INTO boards (title) VALUES ('#{title}'))
-  result = client.query(query)
+  Board.create_and_save(title)
 
-  redirect to('/')
+  redirect to('/'), 302
 end
 
 # Boards#show
 get '/board/:id' do
   halt 404, "無効なURLです" unless params[:id] =~ /^[0-9]+$/
 
-  id     = params[:id]
-  query  = %Q(SELECT * FROM boards WHERE id='#{id}')
-  result = client.query(query)
-  @board = result.first
+  @board = Board.find(params[:id].to_i).first
+  @posts = Post.where(params[:id].to_i)
 
   erb :show_board
+end
+
+# Post#create
+post '/posts' do
+  Post.create_and_save(params[:board_id], params[:name], params[:content])
+
+  redirect to("/board/#{params[:board_id]}")
 end
