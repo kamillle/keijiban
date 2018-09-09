@@ -9,7 +9,7 @@ require 'pry'
 require_relative 'models/init'
 
 helpers do
-  def link_to(path, description=path)
+  def link_to(path, description)
     %Q(<a href="http://localhost:4567/#{path}">#{description}</a>)
   end
 end
