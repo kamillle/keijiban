@@ -1,7 +1,6 @@
 # routingを担う
 
 require 'sinatra'
-#require 'slim'
 require 'mysql2'
 require 'pry'
 
@@ -22,13 +21,10 @@ client = Mysql2::Client.new(
   database: 'keijiban_sinatra',
 )
 
-test_board = client.query("select * from boards;")
-
+# root
 get '/' do
-  @boards = []
-  test_board.each do |board|
-    @boards << board
-  end
+  @all_boards = client.query("SELECT * FROM boards;")
+
   erb :index
 end
 
@@ -40,18 +36,20 @@ end
 # Boards#create
 post '/boards' do
   title = params[:title]
-
   query  = %Q(INSERT INTO boards (title) VALUES ('#{title}'))
   result = client.query(query)
+
   redirect to('/')
 end
 
 # Boards#show
 get '/board/:id' do
-  id = params[:id]
+  halt 404, "無効なURLです" unless params[:id] =~ /^[0-9]+$/
 
+  id     = params[:id]
   query  = %Q(SELECT * FROM boards WHERE id='#{id}')
   result = client.query(query)
   @board = result.first
+
   erb :show_board
 end
