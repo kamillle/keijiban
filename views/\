@@ -1,6 +1,0 @@
-<%#this is keijiban by sinatara%>
-
-<h1>掲示板へようこそ！</h1>
-  <% @test_board.each do |board| %>
-    <%= puts board.class %>
-  <% end %>
