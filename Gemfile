@@ -8,3 +8,4 @@ gem "sinatra"
 gem 'sinatra-contrib'
 gem "mysql2"
 gem "pry"
+gem 'rake'

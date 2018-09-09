@@ -10,4 +10,8 @@ class Post < MysqlConnection
   def self.create_and_save(board_id, name, content)
     MysqlConnection.query(%Q(INSERT INTO posts (board_id, name, content) VALUES ('#{board_id}', '#{name}', '#{content}')))
   end
+
+  def self.destroy_all(board_id)
+    MysqlConnection.query(%Q(DELETE FROM posts WHERE board_id='#{board_id}'))
+  end
 end
