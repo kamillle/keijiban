@@ -1,0 +1,18 @@
+CREATE DATABASE keijiban_sinatra;
+
+CREATE TABLE boards(
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(50) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT now(),
+  updated_at DATETIME NOT NULL DEFAULT now(),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE posts(
+  id INT AUTO_INCREMENT NOT NULL,
+  board_id INT NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  content VARCHAR(50) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT now(),
+  PRIMARY KEY (id)
+);
