@@ -1,4 +1,4 @@
-class Post < MysqlConnection
+class Post
   def initialize(id: nil, board_id: nil, name: nil, content: nil, created_at: nil)
     @id, @board_id, @name, @content, @created_at, = id, board_id, name, content, created_at
   end

@@ -1,4 +1,4 @@
-class Board < MysqlConnection
+class Board
   def initialize(id: nil, title: nil, created_at: nil, updated_at: nil)
     @id, @title, @created_at, @updated_at = id, title, created_at, updated_at
   end
